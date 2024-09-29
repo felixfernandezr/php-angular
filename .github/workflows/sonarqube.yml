@@ -13,4 +13,4 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Analyze with SonarQube
-        run: sonar-scanner.bat -D"sonar.projectKey=test-sonarqube" -D"sonar.sources=." -D"sonar.host.url=${{ secrets.SQ_HOST_URL }}" -D"sonar.token=${{ secrets.SONAR_TOKEN }}"
+        run: sonar-scanner -D"sonar.projectKey=test-sonarqube" -D"sonar.sources=." -D"sonar.host.url=${{ secrets.SQ_HOST_URL }}" -D"sonar.token=${{ secrets.SONAR_TOKEN }}"
