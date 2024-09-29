@@ -69,6 +69,7 @@ jobs:
 
   analysis-hosted:
     runs-on: ubuntu-latest
+    if: false
     needs: analysis
 
     steps:
