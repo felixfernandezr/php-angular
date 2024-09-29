@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-test-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
+    if: false
 
     steps:
       - name: Checkout repo
@@ -30,8 +31,6 @@ jobs:
 
   build-and-test-hosted:
     runs-on: ubuntu-latest
-    needs: build-and-test-self-hosted
-    if: false
 
     steps:
       - name: Checkout repo
@@ -59,7 +58,6 @@ jobs:
 
   analysis-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
-    if: false
 
     steps:
       - name: Checkout repo
