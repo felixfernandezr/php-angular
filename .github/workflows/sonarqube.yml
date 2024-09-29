@@ -53,7 +53,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Test app
-        run: npm test
+        run: sudo npm test
 
 
   analysis-self-hosted:
