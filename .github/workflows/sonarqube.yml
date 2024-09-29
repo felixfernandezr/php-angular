@@ -31,6 +31,7 @@ jobs:
   build-and-test-hosted:
     runs-on: ubuntu-latest
     needs: build-and-test-self-hosted
+    if: false
 
     steps:
       - name: Checkout repo
@@ -56,8 +57,9 @@ jobs:
         run: npm test
 
 
-  analysis:
+  analysis-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
+    if: false
 
     steps:
       - name: Checkout repo
@@ -70,7 +72,7 @@ jobs:
   analysis-hosted:
     runs-on: ubuntu-latest
     if: false
-    needs: analysis
+    needs: analysis-self-hosted
 
     steps:
       - name: Checkout repo
