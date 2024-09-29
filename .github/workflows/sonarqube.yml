@@ -1,4 +1,4 @@
-name: SonarQube analysis
+name: php-angular-CI-pipe
 
 on:
   push:
@@ -6,24 +6,78 @@ on:
   workflow_dispatch:
 
 jobs:
-  Analysis:
+  build-and-test-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Analyze with SonarQube
-        run: sonar-scanner -D"sonar.projectKey=test-sonarqube" -D"sonar.sources=." -D"sonar.host.url=${{ secrets.SQ_HOST_URL }}" -D"sonar.token=${{ secrets.SONAR_TOKEN }}"
 
-  Analysis-hosted:
+      - name: Build app
+        run: npm install
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Test app
+        run: npm test
+
+
+  build-and-test-hosted:
     runs-on: ubuntu-latest
-    needs: Analysis
+    needs: build-and-test-self-hosted
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build app
+        run: npm install
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Test app
+        run: npm test
+
+
+  analysis:
+    runs-on: [ 'self-hosted' , 'v1' ]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Analyze with SonarQube
+        run: sonar-scanner -D"sonar.projectKey=test-sonarqube" -D"sonar.sources=." -D"sonar.host.url=${{ secrets.SQ_HOST_URL }}" -D"sonar.token=${{ secrets.SONAR_TOKEN }}"
+
+
+  analysis-hosted:
+    runs-on: ubuntu-latest
+    needs: analysis
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Analyze hosted-runner
         uses: sonarsource/sonarqube-scan-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SQ_HOST_URL }}
+
