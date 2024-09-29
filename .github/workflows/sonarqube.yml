@@ -1,0 +1,19 @@
+name: SonarQube analysis
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  Analysis:
+    runs-on: [ 'self-hosted' , 'v1' ]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Analyze with SonarQube
+        uses: SonarSource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SQ_HOST_URL }}
