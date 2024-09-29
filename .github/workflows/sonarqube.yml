@@ -8,14 +8,13 @@ on:
 jobs:
   build-and-test-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
-    if: false
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Build app
-        run: npm install --verbose
+        run: npm install
 
       - name: Cache Node.js dependencies
         uses: actions/cache@v3
@@ -31,7 +30,6 @@ jobs:
 
   build-and-test-hosted:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
