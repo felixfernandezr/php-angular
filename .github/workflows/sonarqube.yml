@@ -56,7 +56,7 @@ jobs:
 
   analysis-self-hosted:
     runs-on: [ 'self-hosted' , 'v1' ]
-
+    if: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
